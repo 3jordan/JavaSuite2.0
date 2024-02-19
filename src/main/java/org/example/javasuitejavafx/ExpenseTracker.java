@@ -138,4 +138,32 @@ public class ExpenseTracker {
             }
         }
     }
+
+    public void addExpense(String name, double value) {
+        Expense newExpense = new Expense(name, value);
+        Expenses.add(newExpense);
+    }
+
+    public void removeExpense(int index) {
+        try {
+            Expenses.remove(index - 1);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Index does not exist");
+        }
+    }
+
+    public void addIncome(String name, double value) {
+        Income newIncome = new Income(name, value);
+        IncomeList.add(newIncome);
+    }
+
+
+    public void removeIncome(int index) {
+        try {
+            IncomeList.remove(index - 1);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Index does not exist");
+        }
+    }
+
 }
