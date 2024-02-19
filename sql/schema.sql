@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS contacts(
     is_favorite BOOLEAN NOT NULL
 );
 
-SELECT * FROM contacts;
+INSERT INTO contacts (name, email, phone, is_favorite) VALUES ('Adrian', 'a@a.com', '12345', 'TRUE')

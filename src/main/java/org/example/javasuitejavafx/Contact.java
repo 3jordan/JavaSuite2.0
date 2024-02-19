@@ -1,10 +1,11 @@
 package org.example.javasuitejavafx;
 
-import java.sql.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Contact {
@@ -20,6 +21,15 @@ public class Contact {
         this.isFavorite = isFavorite;
     }
 
+    public static void main(String[] args) {
+        Config config = new Config();
+        Scanner scanner = new Scanner(System.in);
+
+        createContact(scanner, config);
+
+        scanner.close();
+    }
+
     public static void createContact(Scanner scanner, Config config) {
         System.out.println("Enter contact details:");
         System.out.print("Name: ");
@@ -30,37 +40,36 @@ public class Contact {
         String phone = scanner.nextLine();
         System.out.print("Is favorite? (true/false): ");
         boolean isFavorite = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline left-over
+        scanner.nextLine();
 
         Contact newContact = new Contact(name, email, phone, isFavorite);
 
-        // Write SQL statement to schema.sql
-        String sqlStatement = "INSERT INTO contacts (name, email, phone, is_favorite) VALUES ('" +
-                newContact.name + "', '" + newContact.email + "', '" +
-                newContact.phone + "', " + newContact.isFavorite + ")";
-        writeToSchemaFile(sqlStatement, config);
+        insertContactIntoDatabase(newContact, config);
     }
 
-    public static ArrayList<String> contactList() {
-        // returns an array of contacts
-        ArrayList<String> list = new ArrayList<>();
+    private static void insertContactIntoDatabase(Contact contact, Config config) {
+        String sqlStatement = "INSERT INTO contacts (name, email, phone, is_favorite) VALUES (?, ?, ?, ?)";
 
-        // queries go here
+        try (Connection connection = config.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlStatement);
+             PrintWriter writer = new PrintWriter(new FileWriter("sql/schema.sql", true))) {
 
-        return list;
-    }
+            statement.setString(1, contact.name);
+            statement.setString(2, contact.email);
+            statement.setString(3, contact.phone);
+            statement.setBoolean(4, contact.isFavorite);
 
-    private static void writeToSchemaFile(String sqlStatement, Config config) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("schema.sql", true));
-             Connection connection = config.getConnection();
-             Statement statement = connection.createStatement()) {
+            int rowsAffected = statement.executeUpdate();
 
-            // Execute the SQL statement
-            statement.executeUpdate(sqlStatement);
+            String executedSqlStatement = statement.toString();
+            writer.println(executedSqlStatement);
+            System.out.println("SQL statement written to schema.sql successfully!");
 
-            // Write the SQL statement to schema.sql file
-            writer.println(sqlStatement);
-            System.out.println("Contact added successfully!");
+            if (rowsAffected > 0) {
+                System.out.println("Contact added successfully!");
+            } else {
+                System.err.println("Failed to add contact.");
+            }
         } catch (SQLException | IOException e) {
             System.err.println("Error adding contact: " + e.getMessage());
         }
