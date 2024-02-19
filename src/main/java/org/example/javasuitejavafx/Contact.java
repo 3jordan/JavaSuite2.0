@@ -48,7 +48,7 @@ public class Contact {
     }
 
     private static void insertContactIntoDatabase(Contact contact, Config config) {
-        String sqlStatement = "INSERT INTO contacts (name, email, phone, is_favorite) VALUES (?, ?, ?, ?)";
+        String sqlStatement = "INSERT INTO contacts (name, email, phone, is_favorite) VALUES (?, ?, ?, ?);";
 
         try (Connection connection = config.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlStatement);
