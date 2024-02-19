@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS contacts(
     email VARCHAR(150),
     phone VARCHAR(13) NOT NULL,
     is_favorite BOOLEAN NOT NULL
-)
+);
 
-SELECT * FROM contacts
+SELECT * FROM contacts;
