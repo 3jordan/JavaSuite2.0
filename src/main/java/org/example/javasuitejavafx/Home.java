@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
-import static org.example.javasuitejavafx.Contact.createContact;
+import static org.example.javasuitejavafx.Contact.*;
 
 public class Home extends Application {
     Stage Window;
@@ -32,6 +32,12 @@ public class Home extends Application {
     public void start(Stage primaryStage) throws Exception {
         Window = primaryStage;
         expenseTracker = new ExpenseTracker();
+        TextField nameTextField = new TextField();
+        TextField emailTextField = new TextField();
+        TextField phoneTextField = new TextField();
+        CheckBox favoriteCheckBox = new CheckBox();
+        Config config = new Config();
+
 
         // UI Components
         Label siteLabel = new Label("Site Connectivity Checker");
@@ -105,6 +111,23 @@ public class Home extends Application {
         // Create layout for the contact book section
         VBox contactPage = new VBox(20);
         contactPage.getChildren().addAll(contactLabel, contactListView, homeButton4);
+
+        // Button to add a new contact
+        Button addButton = new Button("Add Contact");
+        addButton.setOnAction(e -> {
+            createContact(nameTextField, emailTextField, phoneTextField, favoriteCheckBox, config);
+        });
+
+
+//        // Button to update a contact
+//        Button updateButton = new Button("Update Contact");
+//        updateButton.setOnAction(e -> updateContact(contactListView, contacts));
+//
+//        // Button to delete a contact
+//        Button deleteButton = new Button("Delete Contact");
+//        deleteButton.setOnAction(e -> deleteContact(contactListView, contacts));
+
+        contactPage.getChildren().addAll(addButton);
         contactPage.setAlignment(Pos.CENTER);
         sceneContactBook = new Scene(contactPage, 400, 400);
 

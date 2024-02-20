@@ -1,5 +1,8 @@
 package org.example.javasuitejavafx;
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -86,22 +89,17 @@ public class Contact {
 
         return contacts;
     }
-    public static void createContact(Scanner scanner, Config config) {
-        System.out.println("Enter contact details:");
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Phone: ");
-        String phone = scanner.nextLine();
-        System.out.print("Is favorite? (true/false): ");
-        boolean isFavorite = scanner.nextBoolean();
-        scanner.nextLine();
+    public static void createContact(TextField nameField, TextField emailField, TextField phoneField, CheckBox favoriteCheckBox, Config config) {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+        boolean isFavorite = favoriteCheckBox.isSelected();
 
         Contact newContact = new Contact(name, email, phone, isFavorite);
 
         insertContact(newContact, config);
     }
+
 
     private static void insertContact(Contact contact, Config config) {
         String sqlStatement = "INSERT INTO contacts (name, email, phone, is_favorite) VALUES (?, ?, ?, ?);";
