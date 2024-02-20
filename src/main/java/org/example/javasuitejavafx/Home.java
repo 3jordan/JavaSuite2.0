@@ -83,18 +83,18 @@ public class Home extends Application {
 
         // Contact Book
         Button contactButton = new Button("Contact Book");
-//        contactButton.setOnAction(e -> Window.setScene(sceneContactBook));
+        contactButton.setOnAction(e -> Window.setScene(sceneContactBook));
         Label contactLabel = new Label("Contact Book");
-//        VBox contactPage = new VBox(20);
-//        List<Contact> contacts = Contact.fetchContactsFromDatabase();
-//        ListView<String> contactListView = new ListView<>();
-//        for (Contact contact : contacts) {
-//            contactListView.getItems().add(contact.toString());
-//        }
-//
-//        contactPage.getChildren().addAll(contactLabel, contactListView);
-//        sceneContactBook = new Scene(contactPage, 400, 400);
-//        centerAlign(contactPage);
+        VBox contactPage = new VBox(20);
+        List<Contact> contacts = Contact.allContacts();
+        ListView<String> contactListView = new ListView<>();
+        for (Contact contact : contacts) {
+            contactListView.getItems().add(contact.toString());
+        }
+
+        contactPage.getChildren().addAll(contactLabel, contactListView);
+        sceneContactBook = new Scene(contactPage, 400, 400);
+        centerAlign(contactPage);
 
         // Expense Tracker
         Button expenseButton = new Button("Expense Tracker");

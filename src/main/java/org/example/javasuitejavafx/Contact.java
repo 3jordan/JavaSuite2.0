@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Contact {
     String name;
@@ -18,7 +21,6 @@ public class Contact {
         this.phone = phone;
         this.isFavorite = isFavorite;
     }
-
     public static void main(String[] args) {
         Config config = new Config();
         Scanner scanner = new Scanner(System.in);
@@ -47,7 +49,7 @@ public class Contact {
                     deleteContact(scanner, config);
                     break;
                 case 4:
-                    allContacts(config);
+                    List<Contact> contacts = allContacts();
                     break;
                 case 5:
                     running = false;
@@ -59,14 +61,14 @@ public class Contact {
         }
         scanner.close();
     }
-    public static void allContacts(Config config) {
+    public static List<Contact> allContacts() {
+        Config config = new Config();
+        List<Contact> contacts = new ArrayList<>();
         String sqlStatement = "SELECT * FROM contacts";
 
         try (Connection connection = config.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlStatement);
              ResultSet resultSet = statement.executeQuery()) {
-
-            System.out.println("All contacts:");
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -74,16 +76,15 @@ public class Contact {
                 String phone = resultSet.getString("phone");
                 boolean isFavorite = resultSet.getBoolean("is_favorite");
 
-                System.out.println("Name: " + name);
-                System.out.println("Email: " + email);
-                System.out.println("Phone: " + phone);
-                System.out.println("Is Favorite: " + isFavorite);
-                System.out.println();
+                Contact contact = new Contact(name, email, phone, isFavorite);
+                contacts.add(contact);
             }
 
         } catch (SQLException e) {
             System.err.println("Error retrieving contacts: " + e.getMessage());
         }
+
+        return contacts;
     }
     public static void createContact(Scanner scanner, Config config) {
         System.out.println("Enter contact details:");
@@ -109,16 +110,13 @@ public class Contact {
              PreparedStatement statement = connection.prepareStatement(sqlStatement);
              PrintWriter writer = new PrintWriter(new FileWriter("sql/schema.sql", true))) {
 
-            // Set values for parameters in the prepared statement
             statement.setString(1, contact.name);
             statement.setString(2, contact.email);
             statement.setString(3, contact.phone);
             statement.setBoolean(4, contact.isFavorite);
 
-            // Execute the prepared statement
             int rowsAffected = statement.executeUpdate();
 
-            // Write the executed SQL statement to schema.sql file
             writer.println(statement.toString());
 
             if (rowsAffected > 0) {
@@ -144,12 +142,10 @@ public class Contact {
         String updatedPhone = scanner.nextLine();
         System.out.print("Is favorite? (true/false): ");
         boolean updatedIsFavorite = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
-        // Create a Contact object with updated details
         Contact updatedContact = new Contact(updatedName, updatedEmail, updatedPhone, updatedIsFavorite);
 
-        // Now call the updateContact method with the old name and the updated contact object
         updateContact(oldName, updatedContact, config);
     }
 
@@ -157,7 +153,6 @@ public class Contact {
         System.out.print("Enter the name of the contact you want to delete: ");
         String name = scanner.nextLine();
 
-        // Now call the deleteContact method with the name of the contact to be deleted
         deleteContact(name, config);
     }
 
@@ -168,17 +163,14 @@ public class Contact {
              PreparedStatement statement = connection.prepareStatement(sqlStatement);
              PrintWriter writer = new PrintWriter(new FileWriter("sql/schema.sql", true))) {
 
-            // Set values for parameters in the prepared statement
             statement.setString(1, updatedContact.name);
             statement.setString(2, updatedContact.email);
             statement.setString(3, updatedContact.phone);
             statement.setBoolean(4, updatedContact.isFavorite);
             statement.setString(5, oldName); // Where clause for update
 
-            // Execute the prepared statement
             int rowsAffected = statement.executeUpdate();
 
-            // Write the executed SQL statement to schema.sql file
             writer.println(statement.toString());
 
             if (rowsAffected > 0) {
@@ -198,13 +190,10 @@ public class Contact {
              PreparedStatement statement = connection.prepareStatement(sqlStatement);
              PrintWriter writer = new PrintWriter(new FileWriter("sql/schema.sql", true))) {
 
-            // Set value for parameter in the prepared statement
             statement.setString(1, name);
 
-            // Execute the prepared statement
             int rowsAffected = statement.executeUpdate();
 
-            // Write the executed SQL statement to schema.sql file
             writer.println(statement.toString());
 
             if (rowsAffected > 0) {
