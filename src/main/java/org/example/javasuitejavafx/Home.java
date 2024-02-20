@@ -81,20 +81,23 @@ public class Home extends Application {
         Label personalLabel = new Label("Personal Organization");
         personalButton.setOnAction(e -> Window.setScene(scenePersonalOrganization));
 
-        // Contact Book
+        // Contact Book Section
         Button contactButton = new Button("Contact Book");
         contactButton.setOnAction(e -> Window.setScene(sceneContactBook));
         Label contactLabel = new Label("Contact Book");
-        VBox contactPage = new VBox(20);
+
+        // Fetch contacts
         List<Contact> contacts = Contact.allContacts();
         ListView<String> contactListView = new ListView<>();
         for (Contact contact : contacts) {
             contactListView.getItems().add(contact.toString());
         }
 
+        VBox contactPage = new VBox(20);
         contactPage.getChildren().addAll(contactLabel, contactListView);
-        sceneContactBook = new Scene(contactPage, 400, 400);
         centerAlign(contactPage);
+        sceneContactBook = new Scene(contactPage, 400, 400);
+
 
         // Expense Tracker
         Button expenseButton = new Button("Expense Tracker");
