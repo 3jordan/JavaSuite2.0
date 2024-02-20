@@ -32,11 +32,26 @@ public class Home extends Application {
     public void start(Stage primaryStage) throws Exception {
         Window = primaryStage;
         expenseTracker = new ExpenseTracker();
-        TextField nameTextField = new TextField();
-        TextField emailTextField = new TextField();
-        TextField phoneTextField = new TextField();
-        CheckBox favoriteCheckBox = new CheckBox();
         Config config = new Config();
+
+        // TextFields and CheckBox for contact details
+        TextField nameTextField = new TextField();
+        nameTextField.setPromptText("Name");
+        TextField emailTextField = new TextField();
+        emailTextField.setPromptText("Email");
+        TextField phoneTextField = new TextField();
+        phoneTextField.setPromptText("Phone");
+        CheckBox favoriteCheckBox = new CheckBox("Favorite");
+
+        // Add Contact button
+        Button addButton = new Button("Add Contact");
+        addButton.setOnAction(e -> createContact(nameTextField, emailTextField, phoneTextField, favoriteCheckBox, config));
+
+        // Contact Book Scene
+        VBox contactBookLayout = new VBox(20);
+        contactBookLayout.getChildren().addAll(new Label("Add Contact"), nameTextField, emailTextField, phoneTextField, favoriteCheckBox, addButton);
+        contactBookLayout.setAlignment(Pos.CENTER);
+        sceneContactBook = new Scene(contactBookLayout, 400, 400);
 
 
         // UI Components
@@ -112,11 +127,6 @@ public class Home extends Application {
         VBox contactPage = new VBox(20);
         contactPage.getChildren().addAll(contactLabel, contactListView, homeButton4);
 
-        // Button to add a new contact
-        Button addButton = new Button("Add Contact");
-        addButton.setOnAction(e -> {
-            createContact(nameTextField, emailTextField, phoneTextField, favoriteCheckBox, config);
-        });
 
 
 //        // Button to update a contact
@@ -373,6 +383,8 @@ public class Home extends Application {
         Window.show();
     }
 
+
+
     private void centerAlign(VBox vbox) {
         vbox.setAlignment(Pos.CENTER);
         vbox.setFillWidth(true);
@@ -398,7 +410,21 @@ public class Home extends Application {
         parent.getChildren().add(button);
     }
 
+    public static void createContact(TextField nameField, TextField emailField, TextField phoneField, CheckBox favoriteCheckBox, Config config) {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+        boolean isFavorite = favoriteCheckBox.isSelected();
+
+        // Perform contact creation logic here
+        System.out.println("Name: " + name);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phone);
+        System.out.println("Favorite: " + isFavorite);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+
