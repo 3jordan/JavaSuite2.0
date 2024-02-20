@@ -97,13 +97,15 @@ public class Home extends Application {
         // Create ListView to display contacts
         ListView<String> contactListView = new ListView<>();
         for (Contact contact : contacts) {
-            contactListView.getItems().add(contact.toString());
+            contactListView.getItems().add(contact.name);
+            System.out.println("Number if contacts added to list view: " + contactListView.getItems().size());
         }
+        contactListView.setPrefHeight(300);
 
         // Create layout for the contact book section
         VBox contactPage = new VBox(20);
-        contactPage.getChildren().addAll(contactLabel, contactListView);
-        centerAlign(contactPage);
+        contactPage.getChildren().addAll(contactLabel, contactListView, homeButton4);
+        contactPage.setAlignment(Pos.CENTER);
         sceneContactBook = new Scene(contactPage, 400, 400);
 
 
@@ -188,12 +190,6 @@ public class Home extends Application {
         personalOrganizationPage.getChildren().addAll(personalLabel, contactButton, expenseButton, homeButton);
         scenePersonalOrganization = new Scene(personalOrganizationPage, 200, 200);
         centerAlign(personalOrganizationPage);
-
-        // Contact Book Layout
-        VBox contactBookPage = new VBox(20);
-        contactBookPage.getChildren().addAll(contactLabel, homeButton4);
-        sceneContactBook = new Scene(contactBookPage, 200, 200);
-        centerAlign(contactBookPage);
 
         // Expense Tracker Page Layout
         VBox expenseTrackerPage = new VBox(20);
