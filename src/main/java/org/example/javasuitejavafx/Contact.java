@@ -25,6 +25,10 @@ public class Contact {
         this.isFavorite = isFavorite;
     }
     public static void main(String[] args) {
+        TextField nameTextField = new TextField();
+        TextField emailTextField = new TextField();
+        TextField phoneTextField = new TextField();
+        CheckBox favoriteCheckBox = new CheckBox();
         Config config = new Config();
         Scanner scanner = new Scanner(System.in);
 
@@ -43,7 +47,7 @@ public class Contact {
 
             switch (choice) {
                 case 1:
-                    createContact(scanner, config);
+                    createContact(nameTextField, emailTextField, phoneTextField, favoriteCheckBox, config);
                     break;
                 case 2:
                     updateContact(scanner, config);
