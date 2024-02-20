@@ -83,18 +83,18 @@ public class Home extends Application {
 
         // Contact Book
         Button contactButton = new Button("Contact Book");
-//        contactButton.setOnAction(e -> Window.setScene(sceneContactBook));
+        contactButton.setOnAction(e -> Window.setScene(sceneContactBook));
         Label contactLabel = new Label("Contact Book");
-//        VBox contactPage = new VBox(20);
-//        List<Contact> contacts = Contact.fetchContactsFromDatabase();
-//        ListView<String> contactListView = new ListView<>();
-//        for (Contact contact : contacts) {
-//            contactListView.getItems().add(contact.toString());
-//        }
-//
-//        contactPage.getChildren().addAll(contactLabel, contactListView);
-//        sceneContactBook = new Scene(contactPage, 400, 400);
-//        centerAlign(contactPage);
+        VBox contactPage = new VBox(20);
+        List<Contact> contacts = Contact.allContacts();
+        ListView<String> contactListView = new ListView<>();
+        for (Contact contact : contacts) {
+            contactListView.getItems().add(contact.toString());
+        }
+
+        contactPage.getChildren().addAll(contactLabel, contactListView);
+        sceneContactBook = new Scene(contactPage, 400, 400);
+        centerAlign(contactPage);
 
         // Expense Tracker
         Button expenseButton = new Button("Expense Tracker");
@@ -116,15 +116,16 @@ public class Home extends Application {
         TextField inputField = new TextField();
         TextField resultField = new TextField();
 
+        //ChoiceBox for selecting the input type
+        ChoiceBox<String> inputChoice = new ChoiceBox<>();
+        inputChoice.getItems().addAll("Inch", "Feet", "Yard", "Centimeter", "Meter");
+        inputChoice.setValue("Inch");
+
         //ChoiceBox for selecting the output type
         ChoiceBox<String> outputChoice = new ChoiceBox<>();
         outputChoice.getItems().addAll("Inch", "Feet", "Yard", "Centimeter", "Meter");
         outputChoice.setValue("Inch");
 
-        //ChoiceBox for selecting the input type
-        ChoiceBox<String> inputChoice = new ChoiceBox<>();
-        inputChoice.getItems().addAll("Inch", "Feet", "Yard", "Centimeter", "Meter");
-        inputChoice.setValue("Inch");
 
         Button calculateButton = new Button("Calculate");
         Button backButton = new Button("Back");
@@ -139,13 +140,13 @@ public class Home extends Application {
 
         backButton.setOnAction(e -> Window.setScene(sceneHome));
 
-        conversionCalculatorPage.getChildren().addAll(conversionLabel, inputField, outputChoice, inputChoice, calculateButton, resultField, backButton);
+        conversionCalculatorPage.getChildren().addAll(conversionLabel, inputField, inputChoice, outputChoice, calculateButton, resultField, backButton);
         sceneConversionCalculator = new Scene(conversionCalculatorPage, 400, 400);
         centerAlign(conversionCalculatorPage);
 
 
 
-                // Games Content
+        // Games Content
         Label gameLabel = new Label("Games");
         Button button3 = new Button("Games");
         button3.setOnAction(e -> Window.setScene(sceneGames));
@@ -165,7 +166,7 @@ public class Home extends Application {
         // Home Page Layout
         Label homeLabel = new Label("Home Page");
         VBox homePage = new VBox(20);
-        homePage.getChildren().addAll(homeLabel, personalButton, dataButton, button3);
+        homePage.getChildren().addAll(homeLabel, personalButton, dataButton);
         sceneHome = new Scene(homePage, 400, 400);
         centerAlign(homePage);
 

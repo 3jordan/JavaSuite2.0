@@ -30,7 +30,7 @@ public class GeometryCalculator {
             default:
                 return "Error: Invalid input type";
         }
-        return String.format("%.2f", result) + outputUnit;
+        return String.format("%.2f", result);
     }
 
 
